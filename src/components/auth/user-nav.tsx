@@ -1,0 +1,72 @@
+import Link from 'next/link';
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+
+interface UserNavProps {
+  isAuthed: boolean;
+}
+
+export function UserNav({ isAuthed }: UserNavProps) {
+  if (!isAuthed) {
+    return (
+      <Link href="/login">
+        <Button variant="outline">Login / Sign Up</Button>
+      </Link>
+    );
+  }
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+          <Avatar className="h-8 w-8">
+            <AvatarImage src="https://picsum.photos/seed/user/100/100" alt="@user" />
+            <AvatarFallback>U</AvatarFallback>
+          </Avatar>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="w-56" align="end" forceMount>
+        <DropdownMenuLabel className="font-normal">
+          <div className="flex flex-col space-y-1">
+            <p className="text-sm font-medium leading-none">User</p>
+            <p className="text-xs leading-none text-muted-foreground">
+              user@example.com
+            </p>
+          </div>
+        </DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
+          <Link href="/dashboard/applications?authed=true">
+            <DropdownMenuItem>
+              My Applications
+            </DropdownMenuItem>
+          </Link>
+          <Link href="/dashboard/post-job?authed=true">
+            <DropdownMenuItem>
+              Post a Job
+            </DropdownMenuItem>
+          </Link>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <Link href="/">
+            <DropdownMenuItem>
+              Log out
+            </DropdownMenuItem>
+        </Link>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
